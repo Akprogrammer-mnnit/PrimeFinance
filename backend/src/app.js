@@ -4,6 +4,7 @@ import  cookieParser from 'cookie-parser';
 import {app} from './utils/socket.io.js'
 app.use(cors({
     origin: "https://prime-finance-hbmv.vercel.app",
+    methods: 'GET,POST,PUT,DELETE',
     credentials: true
 }));
 
