@@ -3,7 +3,7 @@ import cors from "cors";
 import  cookieParser from 'cookie-parser';
 import {app} from './utils/socket.io.js'
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: "https://prime-finance-hbmv.vercel.app",
     credentials: true
 }));
 
