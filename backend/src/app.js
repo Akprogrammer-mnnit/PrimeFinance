@@ -3,20 +3,9 @@ import cors from "cors";
 import  cookieParser from 'cookie-parser';
 import {app} from './utils/socket.io.js'
 app.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests with no origin (like curl or mobile apps)
-        if (!origin) return callback(null, true);
-        // For demonstration, you might allow any origin here:
-        return callback(null, origin);
-        // Alternatively, restrict to a set of allowed origins:
-        // const allowedOrigins = ['https://example.com', 'https://anotherdomain.com'];
-        // if (allowedOrigins.includes(origin)) return callback(null, true);
-        // else return callback(new Error('Not allowed by CORS'));
-    },
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true
+  origin: process.env.CORS_ORIGIN,
+  credentials: true, 
 }));
-
 app.use(express.json({ limit: "16kb" }));
 
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
