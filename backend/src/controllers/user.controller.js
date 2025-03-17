@@ -72,9 +72,8 @@ const loginUser = asyncHandler(async (req,res)=>{
     }
     const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        // sameSite: process.env.NODE_ENV === "production" ? "Lax" : "None",
-        sameSite : "Lax"
+        secure: process.env.NODE_ENV === "production", // ✅ Ensures HTTPS in production
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // ✅ Allows cross-origin cookies
     };
     
     return res.status(200)
