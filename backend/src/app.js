@@ -4,7 +4,8 @@ import  cookieParser from 'cookie-parser';
 import {app} from './utils/socket.io.js'
 const allowedOrigins = [
     "https://prime-finance-hbmv.vercel.app",
-    "https://prime-finance-hbmv-hz92asgbd-ayans-projects-991331f8.vercel.app"
+    "https://prime-finance-hbmv-hz92asgbd-ayans-projects-991331f8.vercel.app",
+    "https://prime-finance-hbmv-7rkt8pncd-ayans-projects-991331f8.vercel.app"
 ];
 
 app.use(cors({
