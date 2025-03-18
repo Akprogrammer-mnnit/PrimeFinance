@@ -1,8 +1,8 @@
 import { io } from "socket.io-client";
-import  store  from "../store/store.js"; // Import your Redux store
-import { updateOnlineUsers ,removeOnlineUser} from "../store/authSlice.js"; // Import the action
+import  store  from "../store/store.js"; 
+import { updateOnlineUsers ,removeOnlineUser} from "../store/authSlice.js"; 
 
-const BASEURL = "http://localhost:8000";
+const BASEURL = import.meta.env.VITE_SOCKET_BASE_URL;
 let socket;
 
 export const connectSocket = (userId) => {
@@ -19,7 +19,7 @@ export const connectSocket = (userId) => {
 
     socket.on("getOnlineUsers", (data) => {
       console.log("Online users updated:", data);
-      store.dispatch(updateOnlineUsers(data)); // Dispatch Redux action
+      store.dispatch(updateOnlineUsers(data));
     });
   }
 };
