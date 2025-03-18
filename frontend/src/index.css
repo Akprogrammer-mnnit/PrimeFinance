@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.chart-container {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.chart-container svg *:focus {
+    outline: none;
+}

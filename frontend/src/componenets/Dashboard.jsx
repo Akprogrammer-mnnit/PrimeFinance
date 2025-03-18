@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -24,6 +23,7 @@ const Dashboard = () => {
   const [selectIncomeVsExpense, setselectIncomeVsExpense] = useState("ALL TIME");
   const [selectIncomeDetails, setselectIncomeDetails] = useState("ALL TIME");
   const [selectExpenseDetails, setselectExpenseDetails] = useState("ALL TIME");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Detect mobile screen
   const mode = useSelector((state) => state.auth.mode);
 
   useEffect(() => {
@@ -40,6 +40,15 @@ const Dashboard = () => {
     };
 
     fetchData();
+  }, []);
+
+  // Handle window resize to update isMobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (!dashboardData) return <p className="text-center text-gray-600">Loading...</p>;
@@ -89,6 +98,11 @@ const Dashboard = () => {
     "July", "August", "September", "October", "November", "December",
   ];
 
+  const shortMonthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+
   const aggregatedData = Object.values(
     incomeDetails.reduce((acc, item) => {
       const key = `${item.month}-${item.year}`;
@@ -102,6 +116,20 @@ const Dashboard = () => {
     ...item,
     month: `${monthNames[item.month - 1]} ${item.year}`,
   }));
+
+  // Format x-axis ticks for mobile
+  const formatTick = (tick) => {
+    if (isMobile) {
+      const [month, year] = tick.split(" ");
+      const monthIndex = monthNames.indexOf(month);
+      if (monthIndex !== -1) {
+        const shortMonth = shortMonthNames[monthIndex];
+        const shortYear = year.slice(-2);
+        return `${shortMonth} ${shortYear}`;
+      }
+    }
+    return tick;
+  };
 
   return (
     <div className={`container mx-auto p-2 sm:p-4 md:p-6 space-y-10 ${mode === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
@@ -153,7 +181,7 @@ const Dashboard = () => {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Income vs Expenses (All time)</h2>
             <div className="w-full max-w-md mx-auto">
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={300} className="chart-container">
                 <BarChart
                   data={[
                     { name: "Income", total: dashboardData.totalIncome },
@@ -173,7 +201,7 @@ const Dashboard = () => {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Income vs Expenses (This month)</h2>
             <div className="w-full max-w-md mx-auto">
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={300} className="chart-container">
                 <BarChart
                   data={[
                     { name: "Income", total: getMonthlyIncome() },
@@ -206,7 +234,7 @@ const Dashboard = () => {
           <div className="shadow-md rounded-lg p-4 md:p-6">
             <h2 className="text-2xl font-semibold mb-4">Expense Breakdown (ALL Time)</h2>
             <div className="w-full max-w-sm mx-auto">
-              <ResponsiveContainer width="100%" aspect={1}>
+              <ResponsiveContainer width="100%" aspect={1} className="chart-container">
                 <PieChart>
                   <Pie
                     data={expenseDetails}
@@ -231,7 +259,7 @@ const Dashboard = () => {
           <div className="shadow-md rounded-lg p-4 md:p-6">
             <h2 className="text-2xl font-semibold mb-4">Expense Breakdown (This month)</h2>
             <div className="w-full max-w-sm mx-auto">
-              <ResponsiveContainer width="100%" aspect={1}>
+              <ResponsiveContainer width="100%" aspect={1} className="chart-container">
                 <PieChart>
                   <Pie
                     data={monthlyExpensesDetails}
@@ -269,7 +297,7 @@ const Dashboard = () => {
           <div className="shadow-md rounded-lg p-4 md:p-6">
             <h2 className="text-2xl font-semibold mb-4">Income Breakdown (ALL Time)</h2>
             <div className="w-full max-w-sm mx-auto">
-              <ResponsiveContainer width="100%" aspect={1}>
+              <ResponsiveContainer width="100%" aspect={1} className="chart-container">
                 <PieChart>
                   <Pie
                     data={incomeDetails}
@@ -294,7 +322,7 @@ const Dashboard = () => {
           <div className="shadow-md rounded-lg p-4 md:p-6">
             <h2 className="text-2xl font-semibold mb-4">Income Breakdown (This month)</h2>
             <div className="w-full max-w-sm mx-auto">
-              <ResponsiveContainer width="100%" aspect={1}>
+              <ResponsiveContainer width="100%" aspect={1} className="chart-container">
                 <PieChart>
                   <Pie
                     data={monthlyIncomeDetails}
@@ -322,9 +350,9 @@ const Dashboard = () => {
       <div className={`${mode === "dark" ? "bg-gray-900" : "bg-gray-50"} shadow-md rounded-lg p-4 md:p-6`}>
         <h2 className="text-2xl font-semibold mb-4">Monthly Trends</h2>
         <div className="w-full max-w-2xl mx-auto">
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={300} className="chart-container">
             <LineChart data={aggregatedData}>
-              <XAxis dataKey="month" />
+              <XAxis dataKey="month" tickFormatter={formatTick} />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -339,7 +367,7 @@ const Dashboard = () => {
         <div className={`${mode === "dark" ? "bg-gray-900" : "bg-gray-50"} shadow-md rounded-lg p-4 md:p-6`}>
           <h2 className="text-2xl font-semibold mb-4">Debt Status</h2>
           <div className="w-full max-w-md mx-auto">
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={300} className="chart-container">
               <BarChart data={statusBreakdown}>
                 <XAxis dataKey="_id" />
                 <YAxis />
@@ -357,7 +385,7 @@ const Dashboard = () => {
       <div className={`${mode === "dark" ? "bg-gray-900" : "bg-gray-50"} shadow-md rounded-lg p-4 md:p-6`}>
         <h2 className="text-2xl font-semibold mb-4">Recurring Payments by Frequency</h2>
         <div className="w-full max-w-md mx-auto">
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={300} className="chart-container">
             <AreaChart data={paymentsByFrequency}>
               <XAxis dataKey="_id" />
               <YAxis />
