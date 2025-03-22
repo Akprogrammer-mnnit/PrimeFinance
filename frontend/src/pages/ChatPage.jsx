@@ -49,7 +49,7 @@ function ChatPage() {
 
     return (
         <div className="flex flex-col md:flex-row h-screen">
-            <div className="md:w-1/3 h-60 md:h-full border-b md:border-b-0 md:border-r">
+            <div className="md:w-1/3  md:h-full">
                 <SideBar onUserClick={handleUserClick} />
             </div>
 

@@ -13,7 +13,6 @@ const ChatContainer = ({ user }) => {
     const [newMessage, setNewMessage] = useState("");
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
-    // Use a single state variable to store the image URL for preview
     const [imagetopreview, setImageToPreview] = useState(null);
     const messagesEndRef = useRef(null);
 
@@ -40,7 +39,6 @@ const ChatContainer = ({ user }) => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-    // Toggle function to show or hide the image preview modal
     const toggleImagePreviewer = (imageUrl) => {
         setImageToPreview(imageUrl);
     };
