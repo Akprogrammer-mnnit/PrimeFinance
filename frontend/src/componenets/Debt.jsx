@@ -162,7 +162,7 @@ const Debt = () => {
       withCredentials: true,
     })
       .then((response) => {
-        console.log(response)
+       
         setDebts((prevDebts) =>
           prevDebts.map((debt) =>
             debt._id === response.data.message._id ? { ...debt, ...response.date.message } : debt
