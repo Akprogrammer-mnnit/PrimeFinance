@@ -24,7 +24,8 @@ function App() {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("User not logged in");
+        navigate("/login");
       })
       .finally(() => setLoading(false));
   }, [dispatch, status]);
