@@ -14,11 +14,10 @@ export const connectSocket = (userId) => {
     });
 
     socket.on("connect", () => {
-      console.log("Connected to server", socket.id);
+      console.log("Connected to server");
     });
 
     socket.on("getOnlineUsers", (data) => {
-      console.log("Online users updated:", data);
       store.dispatch(updateOnlineUsers(data));
     });
   }
