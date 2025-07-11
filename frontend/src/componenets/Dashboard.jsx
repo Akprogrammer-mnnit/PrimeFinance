@@ -32,7 +32,7 @@ const Dashboard = () => {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dashboard/`, {
           withCredentials: true,
         });
-        console.log(response);
+       
         setDashboardData(response.data.message);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
