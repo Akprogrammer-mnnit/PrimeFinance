@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { login, logout } from './store/authSlice.js'
 import { Header, Loading } from './componenets/index.js';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { connectSocket, disconnectSocket } from './lib/socket.js';
 
@@ -25,7 +25,6 @@ function App() {
       })
       .catch((error) => {
         console.error("User not logged in");
-        navigate("/login");
       })
       .finally(() => setLoading(false));
   }, [dispatch, status]);
